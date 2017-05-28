@@ -3,4 +3,6 @@
     <string name="title_home">Casinha</string>
     <string name="title_dashboard">Painelzinho</string>
     <string name="title_notifications">Notificaçõezinhas</string>
+    <string name="title_tasks">Tasks</string>
+    <string name="title_categorias">Categorias</string>
 </resources>
