@@ -19,7 +19,7 @@ public class TasksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_categorias, container, false);
+        View view = inflater.inflate(R.layout.fragment_categories, container, false);
 
         ListView categoriasListView = (ListView) view.findViewById(R.id.lista_categorias);
 

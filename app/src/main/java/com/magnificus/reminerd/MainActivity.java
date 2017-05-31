@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
                     ChangeFragment(R.id.content, new TasksFragment());
                     return true;
                 case R.id.navigation_categorias:
-                    ChangeFragment(R.id.content, new CategoriasFragment());
+                    ChangeFragment(R.id.content, new CategoriesFragment());
                     return true;
             }
             return false;
