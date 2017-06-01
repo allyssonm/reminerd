@@ -15,6 +15,7 @@ public class TaskEntity {
     private String Date;
     private String Hour;
     private Long IDCategoryEntity;
+    private CategoryEntity CategoryEntity;
 
     public Long getID() {
         return ID;
@@ -62,5 +63,13 @@ public class TaskEntity {
 
     public void setIDCategoryEntity(Long IDCategoryEntity) {
         this.IDCategoryEntity = IDCategoryEntity;
+    }
+
+    public CategoryEntity getCategoryEntity() {
+        return CategoryEntity;
+    }
+
+    public void setCategoryEntity(CategoryEntity categoryEntity) {
+        CategoryEntity = categoryEntity;
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 
@@ -50,6 +51,23 @@ public class ColorRepository extends SQLiteOpenHelper {
         List<ColorEntity> colors = populateColors(c);
 
         return colors;
+    }
+
+    public ColorEntity getColor(Long id) {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT * FROM Colors WHERE ID = ?";
+        Cursor c = db.rawQuery(sql, new String[]{id.toString()});
+        ColorEntity colorEntity = new ColorEntity();
+        if (c != null) {
+            if(c.moveToFirst()) {
+                colorEntity.setID(c.getLong(c.getColumnIndex("ID")));
+                colorEntity.setName(c.getString(c.getColumnIndex("Name")));
+                colorEntity.setHexadecimal(c.getString(c.getColumnIndex("Hexadecimal")));
+
+                return colorEntity;
+            }
+        }
+        return null;
     }
 
     @NonNull

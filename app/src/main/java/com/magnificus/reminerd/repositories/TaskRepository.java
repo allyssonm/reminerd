@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
+import com.magnificus.reminerd.Entities.CategoryEntity;
+import com.magnificus.reminerd.Entities.ColorEntity;
 import com.magnificus.reminerd.Entities.TaskEntity;
 
 import java.util.ArrayList;
@@ -18,8 +20,11 @@ import java.util.List;
 
 public class TaskRepository extends SQLiteOpenHelper {
 
+    private final Context context;
+
     public TaskRepository(Context context) {
         super(context, "Tasks", null, 1);
+        this.context = context;
     }
 
     @Override
@@ -72,6 +77,23 @@ public class TaskRepository extends SQLiteOpenHelper {
         }
 
         return tasks;
+    }
+
+    //TODO: This another gambex needs to be resolved later
+    private CategoryEntity setCategoryObject(Long id) {
+        CategoryRepository categoryRepository = new CategoryRepository(this.context);
+        CategoryEntity categoryEntity = categoryRepository.getCategory(id);
+
+        if (categoryEntity != null) {
+            return categoryEntity;
+        } else {
+            categoryEntity.setID((long) 666);
+            categoryEntity.setName("Default category");
+            categoryEntity.setIDColorEntity((long) 1);
+            categoryEntity.setColorEntity(categoryRepository.setColorObject((long) 1));
+
+            return categoryEntity;
+        }
     }
 
     public void insert(TaskEntity taskEntity) {

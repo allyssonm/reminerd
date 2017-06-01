@@ -9,6 +9,7 @@ public class CategoryEntity {
     private Long ID;
     private String Name;
     private Long IDColorEntity;
+    private ColorEntity ColorEntity;
 
     public Long getID() {
         return ID;
@@ -32,5 +33,13 @@ public class CategoryEntity {
 
     public void setIDColorEntity(Long IDColorEntity) {
         this.IDColorEntity = IDColorEntity;
+    }
+
+    public ColorEntity getColorEntity() {
+        return ColorEntity;
+    }
+
+    public void setColorEntity(ColorEntity colorEntity) {
+        ColorEntity = colorEntity;
     }
 }

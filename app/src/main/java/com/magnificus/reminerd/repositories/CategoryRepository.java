@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 import com.magnificus.reminerd.Entities.CategoryEntity;
+import com.magnificus.reminerd.Entities.ColorEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,11 @@ import java.util.List;
 
 public class CategoryRepository extends SQLiteOpenHelper {
 
+    private final Context context;
+
     public CategoryRepository(Context context) {
         super(context, "Categories", null, 1);
+        this.context = context;
     }
 
     @Override
@@ -60,11 +64,46 @@ public class CategoryRepository extends SQLiteOpenHelper {
             category.setID(c.getLong(c.getColumnIndex("ID")));
             category.setName(c.getString(c.getColumnIndex("Name")));
             category.setIDColorEntity(c.getLong(c.getColumnIndex("IDColorEntity")));
+            category.setColorEntity(this.setColorObject(category.getIDColorEntity()));
 
             categories.add(category);
         }
 
         return categories;
+    }
+
+    public CategoryEntity getCategory(Long id) {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT * FROM Categories WHERE ID = ?";
+        Cursor c = db.rawQuery(sql, new String[]{id.toString()});
+        CategoryEntity categoryEntity = new CategoryEntity();
+        if (c != null) {
+            if(c.moveToFirst()) {
+                categoryEntity.setID(c.getLong(c.getColumnIndex("ID")));
+                categoryEntity.setName(c.getString(c.getColumnIndex("Name")));
+                categoryEntity.setIDColorEntity(c.getLong(c.getColumnIndex("IDColorEntity")));
+                categoryEntity.setColorEntity(this.setColorObject(categoryEntity.getIDColorEntity()));
+
+                return categoryEntity;
+            }
+        }
+        return null;
+    }
+
+    //TODO: This gambex needs to be resolved later
+    public ColorEntity setColorObject(Long id) {
+        ColorRepository colorRepository = new ColorRepository(this.context);
+        ColorEntity colorEntity = colorRepository.getColor(id);
+
+        if (colorEntity != null) {
+            return colorEntity;
+        } else {
+            colorEntity.setID((long) 666);
+            colorEntity.setName("Gray");
+            colorEntity.setHexadecimal("#CCC");
+
+            return colorEntity;
+        }
     }
 
     public void insert(CategoryEntity categoryEntity) {
