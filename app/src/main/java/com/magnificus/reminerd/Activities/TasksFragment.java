@@ -1,4 +1,4 @@
-package com.magnificus.reminerd;
+package com.magnificus.reminerd.Activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.magnificus.reminerd.R;
+
 /**
  * Created by gui on 28/05/17.
  */
 
-public class CategoriesFragment extends Fragment {
+public class TasksFragment extends Fragment {
 
     @Nullable
     @Override
@@ -23,7 +25,7 @@ public class CategoriesFragment extends Fragment {
 
         ListView categoriasListView = (ListView) view.findViewById(R.id.lista_categorias);
 
-        String[] aRei = {"cat 1", "cat 2", "cat 3"};
+        String[] aRei = {"task 1", "task 2", "task 3"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, aRei);

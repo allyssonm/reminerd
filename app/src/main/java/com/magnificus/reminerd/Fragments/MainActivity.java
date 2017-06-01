@@ -1,4 +1,4 @@
-package com.magnificus.reminerd;
+package com.magnificus.reminerd.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -10,6 +10,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.magnificus.reminerd.Activities.CategoriesFragment;
+import com.magnificus.reminerd.R;
+import com.magnificus.reminerd.Activities.TasksFragment;
 
 public class MainActivity extends AppCompatActivity {
 
