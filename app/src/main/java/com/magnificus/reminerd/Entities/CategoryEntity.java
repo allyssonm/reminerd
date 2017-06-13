@@ -11,6 +11,14 @@ public class CategoryEntity {
     private Long IDColorEntity;
     private ColorEntity ColorEntity;
 
+    public CategoryEntity(){}
+
+    public CategoryEntity(long ID, String Name){
+        this.ID = ID;
+        this.Name = Name;
+    }
+
+
     public Long getID() {
         return ID;
     }

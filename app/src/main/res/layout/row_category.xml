@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/row_category_color"
+        android:layout_width="10dp"
+        android:layout_height="30dp"
+        android:background="@drawable/category_rectangle"
+        android:layout_margin="10dp"
+
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category Name"
+        android:layout_toRightOf="@id/row_category_color"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:id="@+id/row_category_name"
+        />
+
+</RelativeLayout>
