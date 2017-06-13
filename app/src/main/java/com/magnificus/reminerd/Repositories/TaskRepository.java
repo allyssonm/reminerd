@@ -1,4 +1,4 @@
-package com.magnificus.reminerd.repositories;
+package com.magnificus.reminerd.Repositories;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 import com.magnificus.reminerd.Entities.CategoryEntity;
-import com.magnificus.reminerd.Entities.ColorEntity;
 import com.magnificus.reminerd.Entities.TaskEntity;
 
 import java.util.ArrayList;

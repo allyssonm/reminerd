@@ -1,4 +1,4 @@
-package com.magnificus.reminerd.repositories;
+package com.magnificus.reminerd.Repositories;
 
 import android.content.ContentValues;
 import android.content.Context;

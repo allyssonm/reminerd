@@ -1,12 +1,10 @@
-package com.magnificus.reminerd.repositories;
+package com.magnificus.reminerd.Repositories;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 
 import com.magnificus.reminerd.Entities.ColorEntity;
