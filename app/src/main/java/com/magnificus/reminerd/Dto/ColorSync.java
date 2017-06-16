@@ -12,4 +12,8 @@ public class ColorSync {
 
     private List<ColorEntity> colors;
 
+    public List<ColorEntity> getColors() {
+        return this.colors;
+    }
+
 }

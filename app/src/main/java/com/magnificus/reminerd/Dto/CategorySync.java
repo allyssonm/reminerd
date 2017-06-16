@@ -12,4 +12,8 @@ public class CategorySync {
 
     private List<CategoryEntity> categories;
 
+    public List<CategoryEntity> getCategories(){
+        return this.categories;
+    }
+
 }

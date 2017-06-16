@@ -16,7 +16,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class RetrofitInitializer {
 
     private final Retrofit retrofit;
-    private final String baseUrl = "KOKOK";
+    private final String baseUrl = "http://10.0.2.2:8000/api/";
 
     public RetrofitInitializer() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

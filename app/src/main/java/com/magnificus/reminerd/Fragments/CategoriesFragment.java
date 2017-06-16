@@ -1,4 +1,4 @@
-package com.magnificus.reminerd.Activities;
+package com.magnificus.reminerd.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -43,10 +43,6 @@ public class CategoriesFragment extends Fragment {
         categories.add(new CategoryEntity(1,"Teste Categoria 9"));
         categories.add(new CategoryEntity(1,"Teste Categoria 10"));
         categories.add(new CategoryEntity(1,"Teste Categoria 11"));
-
-
-
-
 
         CategoriesAdapter adapter = new CategoriesAdapter(getContext(), R.layout.row_category, categories);
 

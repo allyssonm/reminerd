@@ -12,4 +12,7 @@ public class TaskSync {
 
     private List<TaskEntity> tasks;
 
+    public List<TaskEntity> getTasks() {
+        return this.tasks;
+    }
 }

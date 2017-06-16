@@ -1,5 +1,7 @@
 package com.magnificus.reminerd.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.sql.Time;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * Created by allysson on 31/05/17.
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TaskEntity {
 
     private Long ID;

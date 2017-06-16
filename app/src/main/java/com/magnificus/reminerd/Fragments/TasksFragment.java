@@ -1,4 +1,4 @@
-package com.magnificus.reminerd.Activities;
+package com.magnificus.reminerd.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
