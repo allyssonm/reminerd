@@ -13,6 +13,14 @@ public class ColorEntity {
     private String Name;
     private String Hexadecimal;
 
+    public ColorEntity(){}
+
+    public ColorEntity(Long ID, String Name, String Hexadecimal){
+        this.ID = ID;
+        this.Name = Name;
+        this.Hexadecimal = Hexadecimal;
+    }
+
     public Long getID() {
         return ID;
     }

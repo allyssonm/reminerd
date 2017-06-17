@@ -11,7 +11,11 @@ import android.widget.ListView;
 
 import com.magnificus.reminerd.Adapters.CategoriesAdapter;
 import com.magnificus.reminerd.Entities.CategoryEntity;
+import com.magnificus.reminerd.Entities.ColorEntity;
 import com.magnificus.reminerd.R;
+import com.magnificus.reminerd.Repositories.CategoryRepository;
+import com.magnificus.reminerd.Repositories.ColorRepository;
+import com.magnificus.reminerd.Services.CategoryService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,27 +26,17 @@ import java.util.List;
 
 public class CategoriesFragment extends Fragment {
 
+    CategoryRepository repository;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
+        repository = new CategoryRepository(getContext());
 
         ListView categoriasListView = (ListView) view.findViewById(R.id.lista_categorias);
 
-        List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
-
-        categories.add(new CategoryEntity(1,"Teste Categoria 1"));
-        categories.add(new CategoryEntity(1,"Teste Categoria 2"));
-        categories.add(new CategoryEntity(1,"Teste Categoria 3"));
-        categories.add(new CategoryEntity(1,"Teste Categoria 4"));
-        categories.add(new CategoryEntity(1,"Teste Categoria 5"));
-        categories.add(new CategoryEntity(1,"Teste Categoria 6"));
-        categories.add(new CategoryEntity(1,"Teste Categoria 7"));
-        categories.add(new CategoryEntity(1,"Teste Categoria 8"));
-        categories.add(new CategoryEntity(1,"Teste Categoria 9"));
-        categories.add(new CategoryEntity(1,"Teste Categoria 10"));
-        categories.add(new CategoryEntity(1,"Teste Categoria 11"));
+        List<CategoryEntity> categories = repository.getCategories();
 
         CategoriesAdapter adapter = new CategoriesAdapter(getContext(), R.layout.row_category, categories);
 

@@ -1,5 +1,7 @@
 package com.magnificus.reminerd.Entities;
 
+import android.graphics.Color;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -16,9 +18,17 @@ public class CategoryEntity {
 
     public CategoryEntity(){}
 
-    public CategoryEntity(long ID, String Name){
+    public CategoryEntity(long ID, String Name,Long IDColorEntity){
         this.ID = ID;
         this.Name = Name;
+        this.IDColorEntity = IDColorEntity;
+    }
+
+    public CategoryEntity(long ID, String Name,Long IDColorEntity,ColorEntity ColorEntity){
+        this.ID = ID;
+        this.Name = Name;
+        this.IDColorEntity = IDColorEntity;
+        this.ColorEntity = ColorEntity;
     }
 
 
