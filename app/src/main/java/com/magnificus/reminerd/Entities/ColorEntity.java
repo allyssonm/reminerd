@@ -2,12 +2,14 @@ package com.magnificus.reminerd.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 /**
  * Created by allysson on 31/05/17.
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ColorEntity {
+public class ColorEntity implements Serializable {
 
     private Long ID;
     private String Name;

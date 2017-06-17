@@ -2,6 +2,7 @@ package com.magnificus.reminerd.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TaskEntity {
+public class TaskEntity implements Serializable {
 
     private Long ID;
     private String Title;

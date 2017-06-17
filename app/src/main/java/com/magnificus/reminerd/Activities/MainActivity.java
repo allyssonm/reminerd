@@ -1,5 +1,7 @@
 package com.magnificus.reminerd.Activities;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -8,16 +10,61 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.magnificus.reminerd.Entities.ColorEntity;
 import com.magnificus.reminerd.Fragments.CategoriesFragment;
 import com.magnificus.reminerd.Fragments.TasksFragment;
 import com.magnificus.reminerd.R;
+import com.magnificus.reminerd.Repositories.ColorRepository;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        ChangeFragment(R.id.content, new TasksFragment());
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+    
+    private void ChangeFragment(@IdRes int containerViewId, Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction tx = fragmentManager.beginTransaction();
+
+        tx.replace(containerViewId, fragment);
+
+        tx.commit();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_form_task:
+                startActivity(new Intent(this, TaskFormActivity.class));
+                break;
+            case R.id.menu_form_category:
+                startActivity(new Intent(this, CategoryFormActivity.class));
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -37,25 +84,36 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        ChangeFragment(R.id.content, new TasksFragment());
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-    }
-
-
-    private void ChangeFragment(@IdRes int containerViewId, Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction tx = fragmentManager.beginTransaction();
-
-        tx.replace(containerViewId, fragment);
-
-        tx.commit();
-    }
-
+//    private void foreachColor() {
+//        ColorRepository repo = new ColorRepository(this);
+//        List<ColorEntity> colors = repo.getColors();
+//
+//        for(ColorEntity color : colors) {
+//            Log.i("getColors", "foreachColor: " + color.getName() + " -> " + color.getHexadecimal());
+//        }
+//    }
+//
+//    private void setSomeColorToTest() {
+//        ColorEntity color = new ColorEntity();
+//        color.setName("Red");
+//        color.setHexadecimal("#f44336");
+//        ColorEntity color1 = new ColorEntity();
+//        color1.setName("Blue");
+//        color1.setHexadecimal("#42a5f5");
+//        ColorEntity color2 = new ColorEntity();
+//        color2.setName("Green");
+//        color2.setHexadecimal("#66bb6a");
+//        ColorEntity color3 = new ColorEntity();
+//        color3.setName("Yellow");
+//        color3.setHexadecimal("#ffeb3b");
+//
+//        ColorRepository repo = new ColorRepository(this);
+//
+//        repo.insert(color);
+//        repo.insert(color1);
+//        repo.insert(color2);
+//        repo.insert(color3);
+//
+//        repo.close();
+//    }
 }

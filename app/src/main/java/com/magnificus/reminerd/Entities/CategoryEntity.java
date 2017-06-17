@@ -4,12 +4,14 @@ import android.graphics.Color;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 /**
  * Created by allysson on 31/05/17.
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CategoryEntity {
+public class CategoryEntity implements Serializable {
 
     private Long ID;
     private String Name;
@@ -30,7 +32,6 @@ public class CategoryEntity {
         this.IDColorEntity = IDColorEntity;
         this.ColorEntity = ColorEntity;
     }
-
 
     public Long getID() {
         return ID;
@@ -62,5 +63,10 @@ public class CategoryEntity {
 
     public void setColorEntity(ColorEntity colorEntity) {
         ColorEntity = colorEntity;
+    }
+
+    @Override
+    public String toString() {
+        return "Categoria: " + getName() + ", Cor: " + getColorEntity().getName();
     }
 }
