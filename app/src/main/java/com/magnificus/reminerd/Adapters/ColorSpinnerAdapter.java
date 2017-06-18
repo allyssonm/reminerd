@@ -53,10 +53,10 @@ public class ColorSpinnerAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.adapter_row_spinner_color, parent, false);
         }
 
-        View adapterColor = (View) view.findViewById(R.id.adapter_row_spinner_color);
+        View adapterColor = (View) view.findViewById(R.id.adapter_row_spinner_color_color);
         adapterColor.setBackgroundColor(Color.parseColor(color.getHexadecimal()));
 
-        TextView adapterName = (TextView) view.findViewById(R.id.adapter_row_spinner_name);
+        TextView adapterName = (TextView) view.findViewById(R.id.adapter_row_spinner_color_name);
         adapterName.setText(color.getName());
 
         return view;

@@ -59,6 +59,28 @@ public class TaskRepository extends SQLiteOpenHelper {
         return tasks;
     }
 
+    public TaskEntity getTask(Long id) {
+        String sql = "SELECT * FROM tasks WHERE ID = ?";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery(sql, new String[]{id.toString()});
+        TaskEntity task = new TaskEntity();
+        if (c != null) {
+            if(c.moveToFirst()) {
+                task.setID(c.getLong(c.getColumnIndex("ID")));
+                task.setTitle(c.getString(c.getColumnIndex("Title")));
+                task.setDescription(c.getString(c.getColumnIndex("Description")));
+                task.setDate(c.getString(c.getColumnIndex("Date")));
+                task.setTime(c.getString(c.getColumnIndex("Time")));
+                task.setIDCategoryEntity(c.getLong(c.getColumnIndex("IDCategoryEntity")));
+                task.setCategoryEntity(this.setCategoryObject(task.getIDCategoryEntity()));
+
+                return task;
+            }
+        }
+
+        return null;
+    }
+
     @NonNull
     public List<TaskEntity> populateTasks(Cursor c) {
         List<TaskEntity> tasks = new ArrayList<TaskEntity>();
@@ -69,8 +91,9 @@ public class TaskRepository extends SQLiteOpenHelper {
             task.setTitle(c.getString(c.getColumnIndex("Title")));
             task.setDescription(c.getString(c.getColumnIndex("Description")));
             task.setDate(c.getString(c.getColumnIndex("Date")));
-            task.setTime(c.getString(c.getColumnIndex("Hour")));
+            task.setTime(c.getString(c.getColumnIndex("Time")));
             task.setIDCategoryEntity(c.getLong(c.getColumnIndex("IDCategoryEntity")));
+            task.setCategoryEntity(this.setCategoryObject(task.getIDCategoryEntity()));
 
             tasks.add(task);
         }
@@ -83,16 +106,16 @@ public class TaskRepository extends SQLiteOpenHelper {
         CategoryRepository categoryRepository = new CategoryRepository(this.context);
         CategoryEntity categoryEntity = categoryRepository.getCategory(id);
 
-        if (categoryEntity != null) {
-            return categoryEntity;
-        } else {
+        if (categoryEntity == null) {
             categoryEntity.setID((long) 666);
             categoryEntity.setName("Default category");
             categoryEntity.setIDColorEntity((long) 1);
             categoryEntity.setColorEntity(categoryRepository.setColorObject((long) 1));
-
-            return categoryEntity;
         }
+
+        categoryRepository.close();
+
+        return categoryEntity;
     }
 
     public void insert(TaskEntity taskEntity) {
@@ -124,7 +147,7 @@ public class TaskRepository extends SQLiteOpenHelper {
         data.put("Title", taskEntity.getTitle());
         data.put("Description", taskEntity.getDescription());
         data.put("Date", taskEntity.getDate());
-        data.put("Hour", taskEntity.getTime());
+        data.put("Time", taskEntity.getTime());
         data.put("IDCategoryEntity", taskEntity.getIDCategoryEntity());
 
         return data;
