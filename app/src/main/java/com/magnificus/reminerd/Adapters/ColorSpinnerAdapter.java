@@ -17,12 +17,12 @@ import java.util.List;
  * Created by allysson on 17/06/17.
  */
 
-public class SpinnerAdapter extends BaseAdapter {
+public class ColorSpinnerAdapter extends BaseAdapter {
 
     private final Context context;
     private final List<ColorEntity> colorEntityList;
 
-    public SpinnerAdapter(Context context, List<ColorEntity> colorEntityList) {
+    public ColorSpinnerAdapter(Context context, List<ColorEntity> colorEntityList) {
         this.context = context;
         this.colorEntityList = colorEntityList;
     }
@@ -50,7 +50,7 @@ public class SpinnerAdapter extends BaseAdapter {
         View view = convertView;
 
         if(view == null) {
-            view = inflater.inflate(R.layout.adapter_row_spinner, parent, false);
+            view = inflater.inflate(R.layout.adapter_row_spinner_color, parent, false);
         }
 
         View adapterColor = (View) view.findViewById(R.id.adapter_row_spinner_color);

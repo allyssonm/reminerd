@@ -32,8 +32,8 @@ public class TaskRepository extends SQLiteOpenHelper {
                 "ID INTEGER PRIMARY KEY, " +
                 "Title TEXT NOT NULL, " +
                 "Description TEXT NOT NULL, " +
-                "Date DATE, " +
-                "Hour TIME, " +
+                "Date TEXT, " +
+                "Time TEXT, " +
                 "IDCategoryEntity INTEGER NOT NULL);";
 
         db.execSQL(sql);
@@ -69,7 +69,7 @@ public class TaskRepository extends SQLiteOpenHelper {
             task.setTitle(c.getString(c.getColumnIndex("Title")));
             task.setDescription(c.getString(c.getColumnIndex("Description")));
             task.setDate(c.getString(c.getColumnIndex("Date")));
-            task.setHour(c.getString(c.getColumnIndex("Hour")));
+            task.setTime(c.getString(c.getColumnIndex("Hour")));
             task.setIDCategoryEntity(c.getLong(c.getColumnIndex("IDCategoryEntity")));
 
             tasks.add(task);
@@ -124,7 +124,7 @@ public class TaskRepository extends SQLiteOpenHelper {
         data.put("Title", taskEntity.getTitle());
         data.put("Description", taskEntity.getDescription());
         data.put("Date", taskEntity.getDate());
-        data.put("Hour", taskEntity.getHour());
+        data.put("Hour", taskEntity.getTime());
         data.put("IDCategoryEntity", taskEntity.getIDCategoryEntity());
 
         return data;

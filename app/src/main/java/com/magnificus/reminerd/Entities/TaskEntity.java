@@ -3,8 +3,8 @@ package com.magnificus.reminerd.Entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
 
 /**
  * Created by allysson on 31/05/17.
@@ -17,7 +17,9 @@ public class TaskEntity implements Serializable {
     private String Title;
     private String Description;
     private String Date;
-    private String Hour;
+    private java.sql.Date DateFormat;
+    private String Time;
+    private java.sql.Time TimeFormat;
     private Long IDCategoryEntity;
     private CategoryEntity CategoryEntity;
 
@@ -53,12 +55,12 @@ public class TaskEntity implements Serializable {
         Date = date;
     }
 
-    public String getHour() {
-        return Hour;
+    public String getTime() {
+        return Time;
     }
 
-    public void setHour(String hour) {
-        Hour = hour;
+    public void setTime(String time) {
+        Time = time;
     }
 
     public Long getIDCategoryEntity() {
@@ -67,6 +69,22 @@ public class TaskEntity implements Serializable {
 
     public void setIDCategoryEntity(Long IDCategoryEntity) {
         this.IDCategoryEntity = IDCategoryEntity;
+    }
+
+    public java.sql.Date getDateFormat() {
+        return DateFormat;
+    }
+
+    public void setDateFormat(java.sql.Date dateFormat) {
+        DateFormat = dateFormat;
+    }
+
+    public java.sql.Time getTimeFormat() {
+        return TimeFormat;
+    }
+
+    public void setTimeFormat(java.sql.Time timeFormat) {
+        TimeFormat = timeFormat;
     }
 
     public CategoryEntity getCategoryEntity() {

@@ -6,11 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.magnificus.reminerd.Adapters.SpinnerAdapter;
+import com.magnificus.reminerd.Adapters.ColorSpinnerAdapter;
 import com.magnificus.reminerd.Entities.CategoryEntity;
 import com.magnificus.reminerd.Entities.ColorEntity;
 import com.magnificus.reminerd.Helpers.CategoryFormHelper;
@@ -50,15 +48,14 @@ public class CategoryFormActivity extends AppCompatActivity {
     }
 
     private void loadSpinner() {
-        ColorRepository repo = new ColorRepository(this);
-        List<ColorEntity> colorEntityList = repo.getColors();
-        repo.close();
+        ColorRepository repository = new ColorRepository(this);
+        List<ColorEntity> colorEntityList = repository.getColors();
+        repository.close();
 
-        SpinnerAdapter adapter = new SpinnerAdapter(this, colorEntityList);
+        ColorSpinnerAdapter adapter = new ColorSpinnerAdapter(this, colorEntityList);
         categoryColor.setAdapter(adapter);
         if(categoryEntity != null && categoryEntity.getColorEntity().getHexadecimal() != null) {
             int position = getIndex(categoryColor, categoryEntity.getColorEntity());
-            Log.i("SPINNER", "loadSpinner: " + position);
             categoryColor.setSelection(position);
         }
     }
@@ -75,15 +72,15 @@ public class CategoryFormActivity extends AppCompatActivity {
             case R.id.menu_form_confirm:
                 CategoryEntity category = helper.getCategoryEntity();
 
-                CategoryRepository repo = new CategoryRepository(this);
+                CategoryRepository repository = new CategoryRepository(this);
 
                 if(category.getID() != null) {
-                    repo.update(category);
+                    repository.update(category);
                 } else {
-                    repo.insert(category);
+                    repository.insert(category);
                 }
 
-                repo.close();
+                repository.close();
 
                 //TODO: call retrofit vem depois desse processo, tirar essa responsabilidade de inserir e ws daqui
 

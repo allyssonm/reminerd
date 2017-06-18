@@ -36,8 +36,8 @@ public class CategoryFormHelper {
         return categoryEntity;
     }
 
-    public void fillForm(CategoryEntity categoryEntity) {
-        this.categoryEntity = categoryEntity;
+    public void fillForm(CategoryEntity category) {
+        this.categoryEntity = category;
         categoryName.setText(categoryEntity.getName());
     }
 }
