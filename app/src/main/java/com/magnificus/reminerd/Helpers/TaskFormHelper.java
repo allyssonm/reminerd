@@ -41,14 +41,15 @@ public class TaskFormHelper {
         timeToFormat = activity.getTimeSelected();
     }
 
-    public TaskEntity getTaskEntity(){
+    public TaskEntity getTaskEntity() {
         CategoryEntity category = (CategoryEntity) taskCategory.getSelectedItem();
 
         taskEntity.setTitle(taskTitle.getText().toString());
         taskEntity.setDescription(taskDescription.getText().toString());
         taskEntity.setTime(taskTime.getText().toString());
         taskEntity.setDate(taskDate.getText().toString());
-        taskEntity.setIDCategoryEntity(category.getID());
+        if (category != null)
+            taskEntity.setIDCategoryEntity(category.getID());
         taskEntity.setCategoryEntity(category);
 
         return taskEntity;
@@ -63,6 +64,42 @@ public class TaskFormHelper {
         taskDate.setText(taskEntity.getDate());
     }
 
+    public boolean validateForm() {
+        TaskEntity entity = getTaskEntity();
+
+        if (entity.getTitle() == null
+                || entity.getTitle().isEmpty()
+                || entity.getDate() == null
+                || entity.getDate().isEmpty()
+                || entity.getTime() == null
+                || entity.getTime().isEmpty()
+                || entity.getIDCategoryEntity() == null
+                || entity.getIDCategoryEntity() == 0
+                || entity.getDescription() == null
+                || entity.getDescription().isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public String getErrorMessage() {
+        TaskEntity entity = getTaskEntity();
+
+        if (entity.getTitle() == null || entity.getTitle().isEmpty())
+            return "Digite um título.";
+        if (entity.getDate() == null || entity.getDate().isEmpty())
+            return "Entre com uma data.";
+        if (entity.getTime() == null || entity.getTime().isEmpty())
+            return "Entre com um horário.";
+        if (entity.getIDCategoryEntity() == null || entity.getIDCategoryEntity() == 0)
+            return "Selecione uma categoria.";
+        if (entity.getDescription() == null || entity.getDescription().isEmpty())
+            return "Entre com uma descrição.";
+
+        return "";
+    }
+
     private Date stringToDate(String stringDate) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -73,7 +110,7 @@ public class TaskFormHelper {
         return null;
     }
 
-    private String dateToString(Date date){
+    private String dateToString(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return simpleDateFormat.format(date);
     }

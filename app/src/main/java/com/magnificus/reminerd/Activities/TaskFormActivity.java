@@ -2,6 +2,7 @@ package com.magnificus.reminerd.Activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -113,6 +114,13 @@ public class TaskFormActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_form_confirm:
+
+                if(!helper.validateForm())
+                {
+                    showToast(getBaseContext(),helper.getErrorMessage());
+                    break;
+                }
+
                 TaskEntity task = helper.getTaskEntity();
 
                 TaskRepository repository = new TaskRepository(this);
@@ -180,5 +188,9 @@ public class TaskFormActivity extends AppCompatActivity {
             }
         }
         return index;
+    }
+
+    private void showToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

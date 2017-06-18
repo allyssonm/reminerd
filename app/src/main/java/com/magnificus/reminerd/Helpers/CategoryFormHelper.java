@@ -40,4 +40,27 @@ public class CategoryFormHelper {
         this.categoryEntity = category;
         categoryName.setText(categoryEntity.getName());
     }
+
+    public Boolean validateForm(){
+        CategoryEntity entity = getCategoryEntity();
+
+        if (entity.getIDColorEntity() == null
+                || entity.getIDColorEntity() == 0
+                || entity.getName() == null
+                || entity.getName().isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public String getErrorMessage(){
+        CategoryEntity entity = getCategoryEntity();
+        if (entity.getIDColorEntity() == null || entity.getIDColorEntity() == 0)
+            return "Selecione uma cor";
+        if (entity.getName() == null || entity.getName().isEmpty())
+            return "Digite um nome.";
+
+        return "";
+    }
 }

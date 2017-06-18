@@ -1,12 +1,15 @@
 package com.magnificus.reminerd.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.StringBuilderPrinter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.magnificus.reminerd.Adapters.ColorSpinnerAdapter;
 import com.magnificus.reminerd.Entities.CategoryEntity;
@@ -70,6 +73,13 @@ public class CategoryFormActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_form_confirm:
+
+                if (!helper.validateForm())
+                {
+                    showToast(getBaseContext(),helper.getErrorMessage());
+                    break;
+                }
+
                 CategoryEntity category = helper.getCategoryEntity();
 
                 CategoryRepository repository = new CategoryRepository(this);
@@ -110,5 +120,9 @@ public class CategoryFormActivity extends AppCompatActivity {
             }
         }
         return index;
+    }
+
+    private void showToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }
