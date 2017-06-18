@@ -59,6 +59,14 @@ public class TaskRepository extends SQLiteOpenHelper {
         return tasks;
     }
 
+    public List<TaskEntity> getTasksByCategory(Long id) {
+        String sql = "SELECT * FROM Tasks WHERE IDCategoryEntity = ?";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery(sql, new String[]{id.toString()});
+
+        return populateTasks(c);
+    }
+
     public TaskEntity getTask(Long id) {
         String sql = "SELECT * FROM tasks WHERE ID = ?";
         SQLiteDatabase db = getReadableDatabase();
@@ -152,4 +160,5 @@ public class TaskRepository extends SQLiteOpenHelper {
 
         return data;
     }
+
 }

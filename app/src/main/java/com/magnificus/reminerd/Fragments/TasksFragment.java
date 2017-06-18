@@ -1,16 +1,20 @@
 package com.magnificus.reminerd.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.magnificus.reminerd.Activities.TaskFormActivity;
 import com.magnificus.reminerd.Adapters.TasksAdapter;
@@ -46,6 +50,8 @@ public class TasksFragment extends Fragment {
             }
         });
 
+        registerForContextMenu(tasksListView);
+
         return view;
     }
 
@@ -62,5 +68,31 @@ public class TasksFragment extends Fragment {
 
         TasksAdapter adapter = new TasksAdapter(getContext(), R.layout.row_task, taskEntityList);
         tasksListView.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        final TaskEntity task = (TaskEntity) tasksListView.getItemAtPosition(info.position);
+
+        MenuItem itemDelete = menu.add("Excluir");
+        itemDelete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                showToast(getContext(), "Tarefa: " + task.getTitle() + " excluída.");
+                TaskRepository repository = new TaskRepository(getContext());
+                repository.delete(task);
+                repository.close();
+
+                loadTasks();
+
+                return false;
+            }
+        });
+    }
+
+    private void showToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }
