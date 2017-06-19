@@ -13,31 +13,31 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CategoryEntity implements Serializable {
 
-    private Long ID;
+    private String ID;
     private String Name;
-    private Long IDColorEntity;
+    private String IDColorEntity;
     private ColorEntity ColorEntity;
 
     public CategoryEntity(){}
 
-    public CategoryEntity(long ID, String Name,Long IDColorEntity){
+    public CategoryEntity(String ID, String Name, String IDColorEntity){
         this.ID = ID;
         this.Name = Name;
         this.IDColorEntity = IDColorEntity;
     }
 
-    public CategoryEntity(long ID, String Name,Long IDColorEntity,ColorEntity ColorEntity){
+    public CategoryEntity(String ID, String Name, String IDColorEntity, ColorEntity ColorEntity){
         this.ID = ID;
         this.Name = Name;
         this.IDColorEntity = IDColorEntity;
         this.ColorEntity = ColorEntity;
     }
 
-    public Long getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(Long ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
@@ -49,11 +49,11 @@ public class CategoryEntity implements Serializable {
         Name = name;
     }
 
-    public Long getIDColorEntity() {
+    public String getIDColorEntity() {
         return IDColorEntity;
     }
 
-    public void setIDColorEntity(Long IDColorEntity) {
+    public void setIDColorEntity(String IDColorEntity) {
         this.IDColorEntity = IDColorEntity;
     }
 

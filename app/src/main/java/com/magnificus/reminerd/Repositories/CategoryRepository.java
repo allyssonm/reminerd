@@ -12,6 +12,7 @@ import com.magnificus.reminerd.Entities.ColorEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by allysson on 31/05/17.
@@ -29,9 +30,9 @@ public class CategoryRepository extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE Categories (" +
-                "ID INTEGER PRIMARY KEY," +
+                "ID CHAR(36) PRIMARY KEY," +
                 "Name TEXT NOT NULL, " +
-                "IDColorEntity INTEGER NOT NULL);";
+                "IDColorEntity CHAR(36) NOT NULL);";
         db.execSQL(sql);
     }
 
@@ -61,9 +62,9 @@ public class CategoryRepository extends SQLiteOpenHelper {
 
         while (c.moveToNext()) {
             CategoryEntity category = new CategoryEntity();
-            category.setID(c.getLong(c.getColumnIndex("ID")));
+            category.setID(c.getString(c.getColumnIndex("ID")));
             category.setName(c.getString(c.getColumnIndex("Name")));
-            category.setIDColorEntity(c.getLong(c.getColumnIndex("IDColorEntity")));
+            category.setIDColorEntity(c.getString(c.getColumnIndex("IDColorEntity")));
             category.setColorEntity(this.setColorObject(category.getIDColorEntity()));
 
             categories.add(category);
@@ -72,16 +73,16 @@ public class CategoryRepository extends SQLiteOpenHelper {
         return categories;
     }
 
-    public CategoryEntity getCategory(Long id) {
+    public CategoryEntity getCategory(String id) {
         SQLiteDatabase db = getReadableDatabase();
         String sql = "SELECT * FROM Categories WHERE ID = ?";
-        Cursor c = db.rawQuery(sql, new String[]{id.toString()});
+        Cursor c = db.rawQuery(sql, new String[]{id});
         CategoryEntity categoryEntity = new CategoryEntity();
         if (c != null) {
             if(c.moveToFirst()) {
-                categoryEntity.setID(c.getLong(c.getColumnIndex("ID")));
+                categoryEntity.setID(c.getString(c.getColumnIndex("ID")));
                 categoryEntity.setName(c.getString(c.getColumnIndex("Name")));
-                categoryEntity.setIDColorEntity(c.getLong(c.getColumnIndex("IDColorEntity")));
+                categoryEntity.setIDColorEntity(c.getString(c.getColumnIndex("IDColorEntity")));
                 categoryEntity.setColorEntity(this.setColorObject(categoryEntity.getIDColorEntity()));
 
                 return categoryEntity;
@@ -91,14 +92,14 @@ public class CategoryRepository extends SQLiteOpenHelper {
     }
 
     //TODO: This gambex needs to be resolved later
-    public ColorEntity setColorObject(Long id) {
+    public ColorEntity setColorObject(String id) {
         ColorRepository colorRepository = new ColorRepository(this.context);
         ColorEntity colorEntity = colorRepository.getColor(id);
 
         if (colorEntity != null) {
             return colorEntity;
         } else {
-            colorEntity.setID((long) 666);
+            colorEntity.setID(generateUUID());
             colorEntity.setName("Gray");
             colorEntity.setHexadecimal("#CCC");
 
@@ -108,8 +109,15 @@ public class CategoryRepository extends SQLiteOpenHelper {
 
     public void insert(CategoryEntity categoryEntity) {
         SQLiteDatabase db = getWritableDatabase();
+        setIdIfNecessary(categoryEntity);
         ContentValues data = buildCategoryObject(categoryEntity);
         db.insert("Categories", null, data);
+    }
+
+    private void setIdIfNecessary(CategoryEntity categoryEntity) {
+        if (categoryEntity.getID() == null){
+            categoryEntity.setID(generateUUID());
+        }
     }
 
     public void update(CategoryEntity categoryEntity) {
@@ -117,14 +125,14 @@ public class CategoryRepository extends SQLiteOpenHelper {
 
         ContentValues data = buildCategoryObject(categoryEntity);
 
-        String[] params = {categoryEntity.getID().toString()};
+        String[] params = {categoryEntity.getID()};
         db.update("Categories", data, "ID = ?", params);
     }
 
     public void delete(CategoryEntity categoryEntity) {
         SQLiteDatabase db = getWritableDatabase();
 
-        String[] params = {categoryEntity.getID().toString()};
+        String[] params = {categoryEntity.getID()};
         db.delete("Categories", "id = ?", params);
     }
 
@@ -136,5 +144,9 @@ public class CategoryRepository extends SQLiteOpenHelper {
         data.put("IDColorEntity", categoryEntity.getIDColorEntity());
 
         return data;
+    }
+
+    private String generateUUID() {
+        return UUID.randomUUID().toString();
     }
 }

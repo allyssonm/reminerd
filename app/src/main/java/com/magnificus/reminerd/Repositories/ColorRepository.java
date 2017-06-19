@@ -11,6 +11,7 @@ import com.magnificus.reminerd.Entities.ColorEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by allysson on 31/05/17.
@@ -25,7 +26,7 @@ public class ColorRepository extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE Colors (" +
-                "ID INTEGER PRIMARY KEY," +
+                "ID CHAR(36) PRIMARY KEY," +
                 "Name TEXT NOT NULL, " +
                 "Hexadecimal TEXT NOT NULL);";
         db.execSQL(sql);
@@ -51,14 +52,14 @@ public class ColorRepository extends SQLiteOpenHelper {
         return colors;
     }
 
-    public ColorEntity getColor(Long id) {
+    public ColorEntity getColor(String id) {
         SQLiteDatabase db = getReadableDatabase();
         String sql = "SELECT * FROM Colors WHERE ID = ?";
-        Cursor c = db.rawQuery(sql, new String[]{id.toString()});
+        Cursor c = db.rawQuery(sql, new String[]{id});
         ColorEntity colorEntity = new ColorEntity();
         if (c != null) {
             if(c.moveToFirst()) {
-                colorEntity.setID(c.getLong(c.getColumnIndex("ID")));
+                colorEntity.setID(c.getString(c.getColumnIndex("ID")));
                 colorEntity.setName(c.getString(c.getColumnIndex("Name")));
                 colorEntity.setHexadecimal(c.getString(c.getColumnIndex("Hexadecimal")));
 
@@ -74,7 +75,7 @@ public class ColorRepository extends SQLiteOpenHelper {
 
         while (c.moveToNext()) {
             ColorEntity color = new ColorEntity();
-            color.setID(c.getLong(c.getColumnIndex("ID")));
+            color.setID(c.getString(c.getColumnIndex("ID")));
             color.setName(c.getString(c.getColumnIndex("Name")));
             color.setHexadecimal(c.getString(c.getColumnIndex("Hexadecimal")));
 
@@ -86,8 +87,15 @@ public class ColorRepository extends SQLiteOpenHelper {
 
     public void insert(ColorEntity colorEntity) {
         SQLiteDatabase db = getWritableDatabase();
+        setIdIfNecessary(colorEntity);
         ContentValues data = buildColorObject(colorEntity);
         db.insert("Colors", null, data);
+    }
+
+    private void setIdIfNecessary(ColorEntity colorEntity) {
+        if (colorEntity.getID() == null){
+            colorEntity.setID(generateUUID());
+        }
     }
 
     public void update(ColorEntity colorEntity) {
@@ -114,5 +122,9 @@ public class ColorRepository extends SQLiteOpenHelper {
         data.put("Hexadecimal", colorEntity.getHexadecimal());
 
         return data;
+    }
+
+    private String generateUUID() {
+        return UUID.randomUUID().toString();
     }
 }

@@ -45,7 +45,7 @@ public class CategoryFormHelper {
         CategoryEntity entity = getCategoryEntity();
 
         if (entity.getIDColorEntity() == null
-                || entity.getIDColorEntity() == 0
+                || entity.getIDColorEntity().isEmpty()
                 || entity.getName() == null
                 || entity.getName().isEmpty()) {
             return false;
@@ -56,7 +56,7 @@ public class CategoryFormHelper {
 
     public String getErrorMessage(){
         CategoryEntity entity = getCategoryEntity();
-        if (entity.getIDColorEntity() == null || entity.getIDColorEntity() == 0)
+        if (entity.getIDColorEntity() == null || entity.getIDColorEntity().isEmpty())
             return "Selecione uma cor";
         if (entity.getName() == null || entity.getName().isEmpty())
             return "Digite um nome.";

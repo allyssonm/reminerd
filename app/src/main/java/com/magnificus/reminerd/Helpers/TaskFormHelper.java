@@ -73,8 +73,8 @@ public class TaskFormHelper {
                 || entity.getDate().isEmpty()
                 || entity.getTime() == null
                 || entity.getTime().isEmpty()
-                || entity.getIDCategoryEntity() == null
-                || entity.getIDCategoryEntity() == 0
+                || entity.getIDCategoryEntity().isEmpty()
+                || entity.getIDCategoryEntity().isEmpty()
                 || entity.getDescription() == null
                 || entity.getDescription().isEmpty()) {
             return false;
@@ -92,7 +92,7 @@ public class TaskFormHelper {
             return "Entre com uma data.";
         if (entity.getTime() == null || entity.getTime().isEmpty())
             return "Entre com um horário.";
-        if (entity.getIDCategoryEntity() == null || entity.getIDCategoryEntity() == 0)
+        if (entity.getIDCategoryEntity() == null || entity.getIDCategoryEntity().isEmpty())
             return "Selecione uma categoria.";
         if (entity.getDescription() == null || entity.getDescription().isEmpty())
             return "Entre com uma descrição.";

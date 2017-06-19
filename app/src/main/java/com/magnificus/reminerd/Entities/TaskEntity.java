@@ -13,21 +13,21 @@ import java.sql.Time;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TaskEntity implements Serializable {
 
-    private Long ID;
+    private String ID;
     private String Title;
     private String Description;
     private String Date;
     private java.sql.Date DateFormat;
     private String Time;
     private java.sql.Time TimeFormat;
-    private Long IDCategoryEntity;
+    private String IDCategoryEntity;
     private CategoryEntity CategoryEntity;
 
-    public Long getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(Long ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
@@ -63,11 +63,11 @@ public class TaskEntity implements Serializable {
         Time = time;
     }
 
-    public Long getIDCategoryEntity() {
+    public String getIDCategoryEntity() {
         return IDCategoryEntity;
     }
 
-    public void setIDCategoryEntity(Long IDCategoryEntity) {
+    public void setIDCategoryEntity(String IDCategoryEntity) {
         this.IDCategoryEntity = IDCategoryEntity;
     }
 

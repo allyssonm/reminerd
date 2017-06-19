@@ -11,23 +11,23 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ColorEntity implements Serializable {
 
-    private Long ID;
+    private String ID;
     private String Name;
     private String Hexadecimal;
 
     public ColorEntity(){}
 
-    public ColorEntity(Long ID, String Name, String Hexadecimal){
+    public ColorEntity(String ID, String Name, String Hexadecimal){
         this.ID = ID;
         this.Name = Name;
         this.Hexadecimal = Hexadecimal;
     }
 
-    public Long getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(Long ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
