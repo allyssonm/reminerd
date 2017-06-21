@@ -1,6 +1,6 @@
 package com.magnificus.reminerd.Services;
 
-import com.magnificus.reminerd.Dto.CategorySync;
+import com.magnificus.reminerd.Dto.CategoryDto;
 import com.magnificus.reminerd.Entities.CategoryEntity;
 
 import retrofit2.Call;
@@ -18,7 +18,7 @@ import retrofit2.http.Path;
 public interface CategoryService {
 
     @GET("categories")
-    Call<CategorySync> list();
+    Call<CategoryDto> list();
 
     @POST("categories")
     Call<Void> insert(@Body CategoryEntity categoryEntity);
@@ -26,6 +26,6 @@ public interface CategoryService {
     @PUT("categories/{id}")
     Call<Void> update(@Path("id") String id, @Body CategoryEntity categoryEntity);
 
-    @DELETE("colors/{id}")
+    @DELETE("categories/{id}")
     Call<Void> delete(@Path("id") String id);
 }

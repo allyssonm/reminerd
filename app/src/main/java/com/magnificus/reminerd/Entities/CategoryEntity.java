@@ -3,6 +3,7 @@ package com.magnificus.reminerd.Entities;
 import android.graphics.Color;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
@@ -15,6 +16,7 @@ public class CategoryEntity implements Serializable {
 
     private String ID;
     private String Name;
+    @JsonProperty("color_id")
     private String IDColorEntity;
     private ColorEntity ColorEntity;
 

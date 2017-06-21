@@ -149,4 +149,21 @@ public class CategoryRepository extends SQLiteOpenHelper {
     private String generateUUID() {
         return UUID.randomUUID().toString();
     }
+
+    public void syncCategories(List<CategoryEntity> categoryEntities) {
+        for(CategoryEntity categoryEntity : categoryEntities) {
+            if(categoryExists(categoryEntity)) {
+                update(categoryEntity);
+            } else {
+                insert(categoryEntity);
+            }
+        }
+    }
+
+    private boolean categoryExists(CategoryEntity categoryEntity) {
+        SQLiteDatabase db = getReadableDatabase();
+        String exists = "SELECT ID FROM Categories WHERE ID = ? LIMIT 1";
+        Cursor cursor = db.rawQuery(exists, new String[]{categoryEntity.getID()});
+        return cursor.getCount() > 0;
+    }
 }

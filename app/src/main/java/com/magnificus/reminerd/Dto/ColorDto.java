@@ -8,7 +8,7 @@ import java.util.List;
  * Created by allysson on 12/06/17.
  */
 
-public class ColorSync {
+public class ColorDto {
 
     private List<ColorEntity> colors;
 

@@ -8,7 +8,7 @@ import java.util.List;
  * Created by allysson on 12/06/17.
  */
 
-public class TaskSync {
+public class TaskDto {
 
     private List<TaskEntity> tasks;
 

@@ -58,7 +58,7 @@ public class ColorRepository extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(sql, new String[]{id});
         ColorEntity colorEntity = new ColorEntity();
         if (c != null) {
-            if(c.moveToFirst()) {
+            if (c.moveToFirst()) {
                 colorEntity.setID(c.getString(c.getColumnIndex("ID")));
                 colorEntity.setName(c.getString(c.getColumnIndex("Name")));
                 colorEntity.setHexadecimal(c.getString(c.getColumnIndex("Hexadecimal")));
@@ -93,7 +93,7 @@ public class ColorRepository extends SQLiteOpenHelper {
     }
 
     private void setIdIfNecessary(ColorEntity colorEntity) {
-        if (colorEntity.getID() == null){
+        if (colorEntity.getID() == null) {
             colorEntity.setID(generateUUID());
         }
     }
@@ -103,14 +103,14 @@ public class ColorRepository extends SQLiteOpenHelper {
 
         ContentValues data = buildColorObject(colorEntity);
 
-        String[] params = {colorEntity.getID().toString()};
+        String[] params = {colorEntity.getID()};
         db.update("Colors", data, "ID = ?", params);
     }
 
     public void delete(ColorEntity colorEntity) {
         SQLiteDatabase db = getWritableDatabase();
 
-        String[] params = {colorEntity.getID().toString()};
+        String[] params = {colorEntity.getID()};
         db.delete("Colors", "id = ?", params);
     }
 
@@ -126,5 +126,23 @@ public class ColorRepository extends SQLiteOpenHelper {
 
     private String generateUUID() {
         return UUID.randomUUID().toString();
+    }
+
+
+    public void syncColors(List<ColorEntity> colorEntities) {
+        for (ColorEntity colorEntity : colorEntities) {
+            if(colorExists(colorEntity)) {
+                update(colorEntity);
+            } else {
+                insert(colorEntity);
+            }
+        }
+    }
+
+    private boolean colorExists(ColorEntity colorEntity) {
+        SQLiteDatabase db = getReadableDatabase();
+        String exists = "SELECT ID FROM Colors WHERE ID = ? LIMIT 1";
+        Cursor cursor = db.rawQuery(exists, new String[]{colorEntity.getID()});
+        return cursor.getCount() > 0;
     }
 }

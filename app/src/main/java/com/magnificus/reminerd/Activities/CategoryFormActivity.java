@@ -18,6 +18,7 @@ import com.magnificus.reminerd.Helpers.CategoryFormHelper;
 import com.magnificus.reminerd.R;
 import com.magnificus.reminerd.Repositories.CategoryRepository;
 import com.magnificus.reminerd.Repositories.ColorRepository;
+import com.magnificus.reminerd.Synchronizers.CategorySync;
 
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class CategoryFormActivity extends AppCompatActivity {
     private Spinner categoryColor;
     private CategoryFormHelper helper;
     private CategoryEntity categoryEntity;
+    private final CategorySync categorySync = new CategorySync(this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,18 +84,17 @@ public class CategoryFormActivity extends AppCompatActivity {
                 }
 
                 CategoryEntity category = helper.getCategoryEntity();
-
                 CategoryRepository repository = new CategoryRepository(this);
 
                 if(category.getID() != null) {
                     repository.update(category);
+                    categorySync.updateCategory(category);
                 } else {
                     repository.insert(category);
+                    categorySync.insertCategory(category);
                 }
 
                 repository.close();
-
-                //TODO: call retrofit vem depois desse processo, tirar essa responsabilidade de inserir e ws daqui
 
                 finish();
                 break;

@@ -1,7 +1,7 @@
 package com.magnificus.reminerd.Services;
 
 import com.magnificus.reminerd.Entities.TaskEntity;
-import com.magnificus.reminerd.Dto.TaskSync;
+import com.magnificus.reminerd.Dto.TaskDto;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,7 +18,7 @@ import retrofit2.http.Path;
 public interface TaskService {
 
     @GET("tasks")
-    Call<TaskSync> list();
+    Call<TaskDto> list();
 
     @POST("tasks")
     Call<Void> insert(@Body TaskEntity taskEntity);
@@ -26,6 +26,6 @@ public interface TaskService {
     @PUT("tasks/{id}")
     Call<Void> update(@Path("id") String id, @Body TaskEntity taskEntity);
 
-    @DELETE("colors/{id}")
+    @DELETE("tasks/{id}")
     Call<Void> delete(@Path("id") String id);
 }

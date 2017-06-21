@@ -1,6 +1,6 @@
 package com.magnificus.reminerd.Services;
 
-import com.magnificus.reminerd.Dto.ColorSync;
+import com.magnificus.reminerd.Dto.ColorDto;
 import com.magnificus.reminerd.Entities.ColorEntity;
 
 import retrofit2.Call;
@@ -18,7 +18,7 @@ import retrofit2.http.Path;
 public interface ColorService {
 
     @GET("colors")
-    Call<ColorSync> list();
+    Call<ColorDto> list();
 
     @POST("colors")
     Call<Void> insert(@Body ColorEntity colorEntity);

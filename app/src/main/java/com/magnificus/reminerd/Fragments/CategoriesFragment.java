@@ -25,6 +25,7 @@ import com.magnificus.reminerd.Repositories.CategoryRepository;
 import com.magnificus.reminerd.Repositories.ColorRepository;
 import com.magnificus.reminerd.Repositories.TaskRepository;
 import com.magnificus.reminerd.Services.CategoryService;
+import com.magnificus.reminerd.Synchronizers.CategorySync;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ import java.util.List;
 public class CategoriesFragment extends Fragment {
 
     private ListView categoriasListView;
+    private final CategorySync categorySync = new CategorySync(getContext());
 
     @Nullable
     @Override
@@ -95,6 +97,7 @@ public class CategoriesFragment extends Fragment {
                     CategoryRepository categoryRepository = new CategoryRepository(getContext());
                     categoryRepository.delete(category);
                     categoryRepository.close();
+                    categorySync.deleteCategory(category);
 
                     loadCategories();
                 }

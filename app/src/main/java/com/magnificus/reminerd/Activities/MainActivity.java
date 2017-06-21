@@ -15,15 +15,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.magnificus.reminerd.Entities.CategoryEntity;
 import com.magnificus.reminerd.Entities.ColorEntity;
 import com.magnificus.reminerd.Fragments.CategoriesFragment;
 import com.magnificus.reminerd.Fragments.TasksFragment;
 import com.magnificus.reminerd.R;
+import com.magnificus.reminerd.Repositories.CategoryRepository;
 import com.magnificus.reminerd.Repositories.ColorRepository;
+import com.magnificus.reminerd.Synchronizers.CategorySync;
+import com.magnificus.reminerd.Synchronizers.ColorSync;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final ColorSync colorSync = new ColorSync(this);
+    private final CategorySync categorySync = new CategorySync(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +43,23 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        colorSync.syncColors();
+        categorySync.syncCategories();
+
+        showIdsCategories();
     }
-    
+
+    public void showIdsCategories() {
+        CategoryRepository repository = new CategoryRepository(this);
+        List<CategoryEntity> categoryEntityList = repository.getCategories();
+        repository.close();
+
+        for(CategoryEntity categoryEntity : categoryEntityList) {
+            Log.i("showIdsCategories", "showIdsCategories: " + categoryEntity.getID());
+        }
+    }
+
     private void ChangeFragment(@IdRes int containerViewId, Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction tx = fragmentManager.beginTransaction();
@@ -83,37 +107,4 @@ public class MainActivity extends AppCompatActivity {
         }
 
     };
-
-//    private void foreachColor() {
-//        ColorRepository repo = new ColorRepository(this);
-//        List<ColorEntity> colors = repo.getColors();
-//
-//        for(ColorEntity color : colors) {
-//            Log.i("getColors", "foreachColor: " + color.getName() + " -> " + color.getHexadecimal());
-//        }
-//    }
-//
-//    private void setSomeColorToTest() {
-//        ColorEntity color = new ColorEntity();
-//        color.setName("Red");
-//        color.setHexadecimal("#f44336");
-//        ColorEntity color1 = new ColorEntity();
-//        color1.setName("Blue");
-//        color1.setHexadecimal("#42a5f5");
-//        ColorEntity color2 = new ColorEntity();
-//        color2.setName("Green");
-//        color2.setHexadecimal("#66bb6a");
-//        ColorEntity color3 = new ColorEntity();
-//        color3.setName("Yellow");
-//        color3.setHexadecimal("#ffeb3b");
-//
-//        ColorRepository repo = new ColorRepository(this);
-//
-//        repo.insert(color);
-//        repo.insert(color1);
-//        repo.insert(color2);
-//        repo.insert(color3);
-//
-//        repo.close();
-//    }
 }
