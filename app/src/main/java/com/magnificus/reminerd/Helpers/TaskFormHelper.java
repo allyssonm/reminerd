@@ -25,8 +25,6 @@ public class TaskFormHelper {
     private final Spinner taskCategory;
 
     private TaskEntity taskEntity;
-    private String dateToFormat;
-    private String timeToFormat;
 
     public TaskFormHelper(TaskFormActivity activity) {
         this.taskEntity = new TaskEntity();
@@ -36,9 +34,6 @@ public class TaskFormHelper {
         taskDescription = (EditText) activity.findViewById(R.id.form_task_description);
         taskDate = (EditText) activity.findViewById(R.id.form_task_date);
         taskCategory = (Spinner) activity.findViewById(R.id.form_task_category);
-
-        dateToFormat = activity.getDateSelected();
-        timeToFormat = activity.getTimeSelected();
     }
 
     public TaskEntity getTaskEntity() {
@@ -47,7 +42,7 @@ public class TaskFormHelper {
         taskEntity.setTitle(taskTitle.getText().toString());
         taskEntity.setDescription(taskDescription.getText().toString());
         taskEntity.setTime(taskTime.getText().toString());
-        taskEntity.setDate(taskDate.getText().toString());
+        taskEntity.setFormattedDate(taskDate.getText().toString());
         if (category != null)
             taskEntity.setIDCategoryEntity(category.getID());
         taskEntity.setCategoryEntity(category);
@@ -61,7 +56,7 @@ public class TaskFormHelper {
         taskTitle.setText(taskEntity.getTitle());
         taskDescription.setText(taskEntity.getDescription());
         taskTime.setText(taskEntity.getTime());
-        taskDate.setText(taskEntity.getDate());
+        taskDate.setText(taskEntity.getFormattedDate());
     }
 
     public boolean validateForm() {
@@ -99,20 +94,4 @@ public class TaskFormHelper {
 
         return "";
     }
-
-    private Date stringToDate(String stringDate) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            return (Date) simpleDateFormat.parse(stringDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private String dateToString(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return simpleDateFormat.format(date);
-    }
-
 }

@@ -1,10 +1,13 @@
 package com.magnificus.reminerd.Entities;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by allysson on 31/05/17.
@@ -17,9 +20,7 @@ public class TaskEntity implements Serializable {
     private String Title;
     private String Description;
     private String Date;
-    private java.sql.Date DateFormat;
     private String Time;
-    private java.sql.Time TimeFormat;
     private String IDCategoryEntity;
     private CategoryEntity CategoryEntity;
 
@@ -47,12 +48,40 @@ public class TaskEntity implements Serializable {
         Description = description;
     }
 
+    //Database
+    public void setDate(String date) {
+        try {
+            java.util.Date dateUtil = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+            this.Date = new SimpleDateFormat("yyyy-MM-dd").format(dateUtil);
+        } catch (ParseException e) {
+            Log.e("setDate", e.getMessage());
+        }
+    }
+
+    //Database
     public String getDate() {
         return Date;
     }
 
-    public void setDate(String date) {
-        Date = date;
+    //FormActivity
+    public void setFormattedDate(String date) {
+        try {
+            java.util.Date dateUtil = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+            this.Date = new SimpleDateFormat("yyyy-MM-dd").format(dateUtil);
+        } catch (ParseException e) {
+            Log.e("setDate", e.getMessage());
+        }
+    }
+
+    //FormActivity
+    public String getFormattedDate() {
+        try {
+            java.util.Date dateUtil = new SimpleDateFormat("yyyy-MM-dd").parse(this.Date);
+            return new SimpleDateFormat("dd/MM/yyyy").format(dateUtil);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getTime() {
@@ -69,22 +98,6 @@ public class TaskEntity implements Serializable {
 
     public void setIDCategoryEntity(String IDCategoryEntity) {
         this.IDCategoryEntity = IDCategoryEntity;
-    }
-
-    public java.sql.Date getDateFormat() {
-        return DateFormat;
-    }
-
-    public void setDateFormat(java.sql.Date dateFormat) {
-        DateFormat = dateFormat;
-    }
-
-    public java.sql.Time getTimeFormat() {
-        return TimeFormat;
-    }
-
-    public void setTimeFormat(java.sql.Time timeFormat) {
-        TimeFormat = timeFormat;
     }
 
     public CategoryEntity getCategoryEntity() {

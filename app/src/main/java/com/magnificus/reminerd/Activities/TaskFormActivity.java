@@ -40,8 +40,6 @@ public class TaskFormActivity extends AppCompatActivity {
     private TaskEntity taskEntity;
     private EditText taskDate;
     private EditText taskTime;
-    private String dateSelected;
-    private String timeSelected;
 
     private int currentYear;
     private int currentMonth;
@@ -54,10 +52,8 @@ public class TaskFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_form);
 
-        taskCategory = (Spinner) findViewById(R.id.form_task_category);
-
         helper = new TaskFormHelper(this);
-
+        taskCategory = (Spinner) findViewById(R.id.form_task_category);
         taskDate = (EditText) findViewById(R.id.form_task_date);
         taskTime = (EditText) findViewById(R.id.form_task_time);
 
@@ -66,7 +62,7 @@ public class TaskFormActivity extends AppCompatActivity {
         Intent intent = getIntent();
         taskEntity = (TaskEntity) intent.getSerializableExtra("task");
 
-        if(taskEntity != null) {
+        if (taskEntity != null) {
             helper.fillForm(taskEntity);
         }
     }
@@ -84,7 +80,7 @@ public class TaskFormActivity extends AppCompatActivity {
 
         CategorySpinnerAdapter adapter = new CategorySpinnerAdapter(this, categoryEntityList);
         taskCategory.setAdapter(adapter);
-        if(taskEntity != null && taskEntity.getCategoryEntity() != null) {
+        if (taskEntity != null && taskEntity.getCategoryEntity() != null) {
             int position = getIndex(taskCategory, taskEntity.getCategoryEntity());
             taskCategory.setSelection(position);
         }
@@ -98,10 +94,8 @@ public class TaskFormActivity extends AppCompatActivity {
         currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         currentMinute = calendar.get(Calendar.MINUTE);
 
-        dateSelected = String.valueOf(currentDay) + "/" + String.valueOf(currentMonth + 1) + "/" + String.valueOf(currentYear);
-        timeSelected = String.valueOf(currentHour) + ":" + String.valueOf(currentMinute);
-        taskDate.setText(dateSelected);
-        taskTime.setText(timeSelected);
+        taskDate.setText(formatDate(currentDay, currentMonth, currentYear));
+        taskTime.setText(String.valueOf(currentHour) + ":" + String.valueOf(currentMinute) + ":00");
     }
 
     @Override
@@ -115,9 +109,8 @@ public class TaskFormActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_form_confirm:
 
-                if(!helper.validateForm())
-                {
-                    showToast(getBaseContext(),helper.getErrorMessage());
+                if (!helper.validateForm()) {
+                    showToast(getBaseContext(), helper.getErrorMessage());
                     break;
                 }
 
@@ -125,7 +118,7 @@ public class TaskFormActivity extends AppCompatActivity {
 
                 TaskRepository repository = new TaskRepository(this);
 
-                if(task.getID() != null) {
+                if (task.getID() != null) {
                     repository.update(task);
                 } else {
                     repository.insert(task);
@@ -144,8 +137,7 @@ public class TaskFormActivity extends AppCompatActivity {
     public void pickDate(View view) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(TaskFormActivity.this, new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                dateSelected = String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + String.valueOf(day);
-                taskDate.setText(String.valueOf(day) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(year));
+                taskDate.setText(formatDate(day, month, year));
             }
         }, currentYear, currentMonth, currentDay);
         datePickerDialog.show();
@@ -154,40 +146,44 @@ public class TaskFormActivity extends AppCompatActivity {
     public void pickTime(View view) {
         final TimePickerDialog timePickerDialog = new TimePickerDialog(TaskFormActivity.this, new TimePickerDialog.OnTimeSetListener() {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                timeSelected = String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
-                taskTime.setText(timeSelected);
+                taskTime.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute) + ":00");
             }
         }, currentHour, currentMinute, true);
         timePickerDialog.show();
     }
 
-    public String getDateSelected() {
-        return this.dateSelected;
-    }
-
-    public String getTimeSelected() {
-        return this.timeSelected;
-    }
-
     /**
      * Found at world wide web, adapted for us
-     * @param spinner your spinner dude
+     *
+     * @param spinner        your spinner dude
      * @param categoryEntity your category entity dude
      * @return index of spinner dude
      */
-    private int getIndex(Spinner spinner, CategoryEntity categoryEntity)
-    {
+    private int getIndex(Spinner spinner, CategoryEntity categoryEntity) {
         int index = 0;
 
-        for (int i = 0; i < spinner.getCount(); i++){
+        for (int i = 0; i < spinner.getCount(); i++) {
             CategoryEntity category = (CategoryEntity) spinner.getItemAtPosition(i);
 
-            if (category.getName().equals(categoryEntity.getName())){
+            if (category.getName().equals(categoryEntity.getName())) {
                 index = i;
                 break;
             }
         }
         return index;
+    }
+
+    private String formatDate(int currentDay, int currentMonth, int currentYear) {
+        String dateToReturn = String.valueOf(currentDay) + "/" + String.valueOf(currentMonth + 1) + "/" + String.valueOf(currentYear);
+
+        try {
+            Date dateUtil = new SimpleDateFormat("dd/MM/yyyy").parse(dateToReturn);
+            dateToReturn = new SimpleDateFormat("dd/MM/yyyy").format(dateUtil);
+        } catch (ParseException e) {
+            Log.e("getCurrentDate", e.getMessage());
+        }
+
+        return dateToReturn;
     }
 
     private void showToast(Context context, String message) {
