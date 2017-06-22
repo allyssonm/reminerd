@@ -25,6 +25,7 @@ import com.magnificus.reminerd.Helpers.TaskFormHelper;
 import com.magnificus.reminerd.R;
 import com.magnificus.reminerd.Repositories.CategoryRepository;
 import com.magnificus.reminerd.Repositories.TaskRepository;
+import com.magnificus.reminerd.Synchronizers.TaskSync;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -34,6 +35,8 @@ import java.util.Date;
 import java.util.List;
 
 public class TaskFormActivity extends AppCompatActivity {
+
+    private final TaskSync taskSync = new TaskSync(this);
 
     private Spinner taskCategory;
     private TaskFormHelper helper;
@@ -115,18 +118,17 @@ public class TaskFormActivity extends AppCompatActivity {
                 }
 
                 TaskEntity task = helper.getTaskEntity();
-
                 TaskRepository repository = new TaskRepository(this);
 
                 if (task.getID() != null) {
                     repository.update(task);
+                    taskSync.updateTask(task);
                 } else {
                     repository.insert(task);
+                    taskSync.insertTask(task);
                 }
 
                 repository.close();
-
-                //TODO: call retrofit vem depois desse processo, tirar essa responsabilidade de inserir e ws daqui
 
                 finish();
                 break;

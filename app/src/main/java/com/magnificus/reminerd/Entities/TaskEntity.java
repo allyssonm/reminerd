@@ -3,6 +3,7 @@ package com.magnificus.reminerd.Entities;
 import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -21,6 +22,7 @@ public class TaskEntity implements Serializable {
     private String Description;
     private String Date;
     private String Time;
+    @JsonProperty("category_id")
     private String IDCategoryEntity;
     private CategoryEntity CategoryEntity;
 

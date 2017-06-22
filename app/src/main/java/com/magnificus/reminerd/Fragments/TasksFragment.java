@@ -21,6 +21,7 @@ import com.magnificus.reminerd.Adapters.TasksAdapter;
 import com.magnificus.reminerd.Entities.TaskEntity;
 import com.magnificus.reminerd.R;
 import com.magnificus.reminerd.Repositories.TaskRepository;
+import com.magnificus.reminerd.Synchronizers.TaskSync;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ import java.util.List;
 public class TasksFragment extends Fragment {
 
     private ListView tasksListView;
+    private final TaskSync taskSync = new TaskSync(getContext());
 
     @Nullable
     @Override
@@ -84,6 +86,7 @@ public class TasksFragment extends Fragment {
                 TaskRepository repository = new TaskRepository(getContext());
                 repository.delete(task);
                 repository.close();
+                taskSync.deleteTask(task);
 
                 loadTasks();
 

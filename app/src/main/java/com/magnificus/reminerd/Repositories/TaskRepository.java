@@ -173,4 +173,20 @@ public class TaskRepository extends SQLiteOpenHelper {
         return UUID.randomUUID().toString();
     }
 
+    public void syncTasks(List<TaskEntity> taskEntities) {
+        for(TaskEntity taskEntity : taskEntities) {
+            if(taskExists(taskEntity)) {
+                update(taskEntity);
+            } else {
+                insert(taskEntity);
+            }
+        }
+    }
+
+    private boolean taskExists(TaskEntity taskEntity) {
+        SQLiteDatabase db = getReadableDatabase();
+        String exists = "SELECT ID FROM Tasks WHERE ID = ? LIMIT 1";
+        Cursor cursor = db.rawQuery(exists, new String[]{taskEntity.getID()});
+        return cursor.getCount() > 0;
+    }
 }

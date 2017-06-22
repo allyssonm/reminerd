@@ -42,7 +42,7 @@ public class CategoryFormActivity extends AppCompatActivity {
         Intent intent = getIntent();
         categoryEntity = (CategoryEntity) intent.getSerializableExtra("category");
 
-        if(categoryEntity != null) {
+        if (categoryEntity != null) {
             helper.fillForm(categoryEntity);
         }
     }
@@ -60,7 +60,7 @@ public class CategoryFormActivity extends AppCompatActivity {
 
         ColorSpinnerAdapter adapter = new ColorSpinnerAdapter(this, colorEntityList);
         categoryColor.setAdapter(adapter);
-        if(categoryEntity != null && categoryEntity.getColorEntity().getHexadecimal() != null) {
+        if (categoryEntity != null && categoryEntity.getColorEntity().getHexadecimal() != null) {
             int position = getIndex(categoryColor, categoryEntity.getColorEntity());
             categoryColor.setSelection(position);
         }
@@ -77,16 +77,15 @@ public class CategoryFormActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_form_confirm:
 
-                if (!helper.validateForm())
-                {
-                    showToast(getBaseContext(),helper.getErrorMessage());
+                if (!helper.validateForm()) {
+                    showToast(getBaseContext(), helper.getErrorMessage());
                     break;
                 }
 
                 CategoryEntity category = helper.getCategoryEntity();
                 CategoryRepository repository = new CategoryRepository(this);
 
-                if(category.getID() != null) {
+                if (category.getID() != null) {
                     repository.update(category);
                     categorySync.updateCategory(category);
                 } else {
@@ -105,18 +104,18 @@ public class CategoryFormActivity extends AppCompatActivity {
 
     /**
      * Found at world wide web, adapted for us
-     * @param spinner your spinner dude
+     *
+     * @param spinner     your spinner dude
      * @param colorEntity your color entity dude
      * @return index of spinner dude
      */
-    private int getIndex(Spinner spinner, ColorEntity colorEntity)
-    {
+    private int getIndex(Spinner spinner, ColorEntity colorEntity) {
         int index = 0;
 
-        for (int i = 0; i < spinner.getCount(); i++){
+        for (int i = 0; i < spinner.getCount(); i++) {
             ColorEntity color = (ColorEntity) spinner.getItemAtPosition(i);
 
-            if (color.getName().equals(colorEntity.getName())){
+            if (color.getName().equals(colorEntity.getName())) {
                 index = i;
                 break;
             }

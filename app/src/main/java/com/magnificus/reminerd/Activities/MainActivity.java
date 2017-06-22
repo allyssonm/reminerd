@@ -24,6 +24,7 @@ import com.magnificus.reminerd.Repositories.CategoryRepository;
 import com.magnificus.reminerd.Repositories.ColorRepository;
 import com.magnificus.reminerd.Synchronizers.CategorySync;
 import com.magnificus.reminerd.Synchronizers.ColorSync;
+import com.magnificus.reminerd.Synchronizers.TaskSync;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final ColorSync colorSync = new ColorSync(this);
     private final CategorySync categorySync = new CategorySync(this);
+    private final TaskSync taskSync = new TaskSync(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         colorSync.syncColors();
         categorySync.syncCategories();
+        taskSync.syncTasks();
 
         showIdsCategories();
     }
