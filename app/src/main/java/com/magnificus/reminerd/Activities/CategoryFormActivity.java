@@ -83,6 +83,8 @@ public class CategoryFormActivity extends AppCompatActivity {
                 }
 
                 CategoryEntity category = helper.getCategoryEntity();
+                category.outdate();
+
                 CategoryRepository repository = new CategoryRepository(this);
 
                 if (category.getID() != null) {

@@ -1,7 +1,5 @@
 package com.magnificus.reminerd.Entities;
 
-import android.graphics.Color;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,6 +17,10 @@ public class CategoryEntity implements Serializable {
     @JsonProperty("color_id")
     private String IDColorEntity;
     private ColorEntity ColorEntity;
+    @JsonIgnoreProperties
+    private int Updated;
+    @JsonIgnoreProperties
+    private int Deleted;
 
     public CategoryEntity(){}
 
@@ -67,8 +69,32 @@ public class CategoryEntity implements Serializable {
         ColorEntity = colorEntity;
     }
 
+    public int getUpdated() {
+        return Updated;
+    }
+
+    public void setUpdated(int updated) {
+        this.Updated = updated;
+    }
+
+    public void updated() {
+        this.Updated = 1;
+    }
+
+    public void outdate() {
+        this.Updated = 0;
+    }
+
+    public int getDeleted() {
+        return Deleted;
+    }
+
+    public void setDeleted(int deleted) {
+        this.Deleted = deleted;
+    }
+
     @Override
     public String toString() {
-        return "Categoria: " + getName() + ", Cor: " + getColorEntity().getName();
+        return "Categoria: " + getName();
     }
 }

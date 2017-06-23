@@ -6,8 +6,14 @@ import android.util.Log;
 
 import com.magnificus.reminerd.Dto.CategoryDto;
 import com.magnificus.reminerd.Entities.CategoryEntity;
+import com.magnificus.reminerd.Events.UpdateCategoriesListEvent;
+import com.magnificus.reminerd.Events.UpdateColorListEvent;
 import com.magnificus.reminerd.Repositories.CategoryRepository;
 import com.magnificus.reminerd.Retrofit.RetrofitInitializer;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,6 +25,7 @@ import retrofit2.Response;
 
 public class CategorySync {
     private final Context context;
+    private EventBus eventBus = EventBus.getDefault();
 
     public CategorySync(Context context) {
         this.context = context;
@@ -47,14 +54,23 @@ public class CategorySync {
         }
     }
 
-    public void updateCategory(CategoryEntity categoryEntity) {
+    public void updateCategory(final CategoryEntity categoryEntity) {
         if(!categoryEntity.getID().isEmpty()) {
             Call call = new RetrofitInitializer().getCategoryService().update(categoryEntity.getID(), categoryEntity);
 
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
-                    Log.i("updateCategory", "onResponse: deu boa");
+                    if(response.body() == null) {
+                        categoryEntity.updated();
+                        new CategorySync(context).insertCategory(categoryEntity);
+                    } else {
+                        CategoryRepository repository = new CategoryRepository(context);
+                        categoryEntity.updated();
+                        repository.update(categoryEntity);
+                        repository.close();
+                        Log.i("updateCategory", "onResponse: deu boa");
+                    }
                 }
 
                 @Override
@@ -83,6 +99,17 @@ public class CategorySync {
         }
     }
 
+    public void syncCategoriesUpdated() {
+        CategoryRepository repository = new CategoryRepository(context);
+        List<CategoryEntity> categoryEntityList = repository.updatedList();
+        repository.close();
+
+        for (CategoryEntity categoryEntity : categoryEntityList) {
+            Log.i("categSync", "NOTSERVER: " + categoryEntity.getName() + " " + categoryEntity.getUpdated());
+            this.updateCategory(categoryEntity);
+        }
+    }
+
     @NonNull
     private Callback<CategoryDto> getCategoriesCallback() {
         return new Callback<CategoryDto>() {
@@ -95,11 +122,14 @@ public class CategorySync {
                 repository.close();
 
                 Log.i("syncCategories", "onResponse: deu boa");
+
+                eventBus.post(new UpdateCategoriesListEvent());
             }
 
             @Override
             public void onFailure(Call<CategoryDto> call, Throwable t) {
                 Log.i("syncCategories", "onFailure: deu ruim " + t.getMessage());
+                eventBus.post(new UpdateCategoriesListEvent());
             }
         };
     }

@@ -47,20 +47,9 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         colorSync.syncColors();
+        categorySync.syncCategoriesUpdated();
         categorySync.syncCategories();
         taskSync.syncTasks();
-
-        showIdsCategories();
-    }
-
-    public void showIdsCategories() {
-        CategoryRepository repository = new CategoryRepository(this);
-        List<CategoryEntity> categoryEntityList = repository.getCategories();
-        repository.close();
-
-        for(CategoryEntity categoryEntity : categoryEntityList) {
-            Log.i("showIdsCategories", "showIdsCategories: " + categoryEntity.getID());
-        }
     }
 
     private void ChangeFragment(@IdRes int containerViewId, Fragment fragment) {

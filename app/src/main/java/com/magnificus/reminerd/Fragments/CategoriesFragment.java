@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,12 +22,17 @@ import com.magnificus.reminerd.Adapters.CategoriesAdapter;
 import com.magnificus.reminerd.Entities.CategoryEntity;
 import com.magnificus.reminerd.Entities.ColorEntity;
 import com.magnificus.reminerd.Entities.TaskEntity;
+import com.magnificus.reminerd.Events.UpdateCategoriesListEvent;
 import com.magnificus.reminerd.R;
 import com.magnificus.reminerd.Repositories.CategoryRepository;
 import com.magnificus.reminerd.Repositories.ColorRepository;
 import com.magnificus.reminerd.Repositories.TaskRepository;
 import com.magnificus.reminerd.Services.CategoryService;
 import com.magnificus.reminerd.Synchronizers.CategorySync;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +45,26 @@ public class CategoriesFragment extends Fragment {
 
     private ListView categoriasListView;
     private final CategorySync categorySync = new CategorySync(getContext());
+    private SwipeRefreshLayout swipe;
+    private EventBus eventBus;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
 
+        eventBus = EventBus.getDefault();
+
         categoriasListView = (ListView) view.findViewById(R.id.lista_categorias);
+        swipe = (SwipeRefreshLayout) view.findViewById(R.id.swipe_categories_list);
+
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                CategorySync syncCategory = new CategorySync(getContext());
+                syncCategory.syncCategories();
+            }
+        });
 
         categoriasListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -62,16 +82,34 @@ public class CategoriesFragment extends Fragment {
         return view;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateCategoriesListEvent(UpdateCategoriesListEvent event){
+        if(swipe.isRefreshing())
+            swipe.setRefreshing(false);
+        loadCategories();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+        eventBus.register(this);
         loadCategories();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        eventBus.unregister(this);
     }
 
     public void loadCategories() {
         CategoryRepository repository = new CategoryRepository(getContext());
         List<CategoryEntity> categories = repository.getCategories();
         repository.close();
+
+        for (CategoryEntity categoryEntity : categories) {
+            Log.i("loadCateg", "loadCategories: " + categoryEntity.getName() + " " + categoryEntity.getUpdated());
+        }
 
         CategoriesAdapter adapter = new CategoriesAdapter(getContext(), R.layout.row_category, categories);
         categoriasListView.setAdapter(adapter);

@@ -23,7 +23,7 @@ public class CategoryRepository extends SQLiteOpenHelper {
     private final Context context;
 
     public CategoryRepository(Context context) {
-        super(context, "Categories", null, 1);
+        super(context, "Categories", null, 3);
         this.context = context;
     }
 
@@ -32,18 +32,22 @@ public class CategoryRepository extends SQLiteOpenHelper {
         String sql = "CREATE TABLE Categories (" +
                 "ID CHAR(36) PRIMARY KEY," +
                 "Name TEXT NOT NULL, " +
-                "IDColorEntity CHAR(36) NOT NULL);";
+                "IDColorEntity CHAR(36) NOT NULL," +
+                "Updated INT DEFAULT 0," +
+                "Deleted INT DEFAULT 0);";
         db.execSQL(sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        /*String sql = "";
         switch (oldVersion) {
             case 1:
-                sql = "QUERY AQUI";
-                db.execSQL(sql);
-        }*/
+                String addColumnUpdated = "ALTER TABLE Categories ADD COLUMN Updated INT DEFAULT 0";
+                db.execSQL(addColumnUpdated);
+            case 2:
+                String addColumnDeleted = "ALTER TABLE Categories ADD COLUMN Deleted INT DEFAULT 0";
+                db.execSQL(addColumnDeleted);
+        }
     }
 
     public List<CategoryEntity> getCategories() {
@@ -66,6 +70,8 @@ public class CategoryRepository extends SQLiteOpenHelper {
             category.setName(c.getString(c.getColumnIndex("Name")));
             category.setIDColorEntity(c.getString(c.getColumnIndex("IDColorEntity")));
             category.setColorEntity(this.setColorObject(category.getIDColorEntity()));
+            category.setUpdated(c.getInt(c.getColumnIndex("Updated")));
+            category.setDeleted(c.getInt(c.getColumnIndex("Deleted")));
 
             categories.add(category);
         }
@@ -142,6 +148,8 @@ public class CategoryRepository extends SQLiteOpenHelper {
         data.put("ID", categoryEntity.getID());
         data.put("Name", categoryEntity.getName());
         data.put("IDColorEntity", categoryEntity.getIDColorEntity());
+        data.put("Updated", categoryEntity.getUpdated());
+        data.put("Deleted", categoryEntity.getDeleted());
 
         return data;
     }
@@ -152,6 +160,9 @@ public class CategoryRepository extends SQLiteOpenHelper {
 
     public void syncCategories(List<CategoryEntity> categoryEntities) {
         for(CategoryEntity categoryEntity : categoryEntities) {
+
+            categoryEntity.updated();
+
             if(categoryExists(categoryEntity)) {
                 update(categoryEntity);
             } else {
@@ -165,5 +176,12 @@ public class CategoryRepository extends SQLiteOpenHelper {
         String exists = "SELECT ID FROM Categories WHERE ID = ? LIMIT 1";
         Cursor cursor = db.rawQuery(exists, new String[]{categoryEntity.getID()});
         return cursor.getCount() > 0;
+    }
+
+    public List<CategoryEntity> updatedList() {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT * FROM Categories WHERE Updated = 0";
+        Cursor cursor = db.rawQuery(sql, null);
+        return populateCategories(cursor);
     }
 }
